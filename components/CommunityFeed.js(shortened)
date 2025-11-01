@@ -1,0 +1,37 @@
+import { useState } from 'react';
+import { FaHome, FaMessage, FaHeart, FaComment } from 'react-icons/fa';
+
+export default function CommunityFeed() {
+  const [activeTab, setActiveTab] = useState('feed');
+  const feed = [ // Mock
+    { caption: 'New workout!', likes: 100, media: 'https://source.unsplash.com/random/?gym' },
+    // Add more
+  ];
+
+  const PostCard = ({ post }) => (
+    <div className="bg-gray-900 mb-4 p-3 rounded">
+      <p>{post.caption}</p>
+      <img src={post.media} alt="" className="w-full h-64" />
+      <div className="flex gap-4">
+        <FaHeart /> {post.likes} <FaComment />
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-black text-white">
+      <div className="fixed bottom-0 w-full flex justify-around py-2 border-t border-gray-700">
+        <FaHome onClick={() => setActiveTab('feed')} className={activeTab === 'feed' ? 'text-blue-400' : ''} />
+        <FaMessage onClick={() => setActiveTab('messages')} className={activeTab === 'messages' ? 'text-blue-400' : ''} />
+      </div>
+      <div className="pt-20 pb-20">
+        {activeTab === 'feed' && (
+          <div className="space-y-4 p-4">
+            {feed.map((post, i) => <PostCard key={i} post={post} />)}
+          </div>
+        )}
+        {activeTab === 'messages' && <div className="p-4">Messages tab - DM threads here</div>}
+      </div>
+    </div>
+  );
+}
