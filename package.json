@@ -1,0 +1,21 @@
+{
+  "name": "athletrix",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "14.0.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "@supabase/supabase-js": "^2",
+    "react-icons": "^5"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3",
+    "autoprefixer": "^10",
+    "postcss": "^8"
+  }
+}
