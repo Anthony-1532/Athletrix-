@@ -1,0 +1,55 @@
+import Head from 'next/head';
+import { useState } from 'react';
+import { FaBasketballBall } from 'react-icons/fa';
+import AthleteOnboarding from '../components/AthleteOnboarding';
+import Login from '../components/Login';
+
+export default function Home() {
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+
+  const trendingAthletes = [
+    { name: "Jordan Lee", sport: <FaBasketballBall className="text-blue-400" />, stats: "Vertical: 40in", focus: ["Shooting"] },
+    // Add 3 more from mock
+  ];
+
+  return (
+    <>
+      <Head>
+        <title>Athletrix</title>
+      </Head>
+      <div className="min-h-screen bg-black text-white">
+        {/* Hero */}
+        <section className="h-screen flex items-center justify-center text-center">
+          <div>
+            <h1 className="text-6xl font-bold mb-8">Show Your Talent. Get Discovered.</h1>
+            <div className="space-x-4">
+              <button onClick={() => setShowLogin(true)} className="bg-blue-500 px-8 py-4 rounded">Join as Athlete</button>
+              <button onClick={() => setShowLogin(true)} className="border-2 border-white px-8 py-4 rounded">Join as Coach</button>
+            </div>
+          </div>
+        </section>
+        {/* Trending Grid */}
+        <section className="py-20 bg-gray-900">
+          <div className="container mx-auto px-4">
+            <h2 className="text-4xl font-bold mb-12 text-center">Trending Athletes</h2>
+            <div className="grid grid-cols-4 gap-8">
+              {trendingAthletes.map((a, i) => (
+                <div key={i} className="bg-gray-800 p-6 rounded">
+                  <h3>{a.name}</h3>
+                  {a.sport}
+                  <p>{a.stats}</p>
+                  <div className="flex gap-1">
+                    {a.focus.map(f => <span key={f} className="bg-blue-500 px-2 py-1 rounded text-sm">{f}</span>)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+      {showLogin && <Login onClose={() => setShowLogin(false)} />}
+      {showOnboarding && <AthleteOnboarding isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />}
+    </>
+  );
+}
