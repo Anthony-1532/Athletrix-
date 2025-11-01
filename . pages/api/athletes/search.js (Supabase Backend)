@@ -1,0 +1,42 @@
+import { supabase } from '../../../lib/supabase';
+
+export default async function handler(req, res) {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  const { sport, focusAreas, minHeight, maxHeight, position, search } = req.body;
+
+  try {
+    let query = supabase.from('athletes').select('*');
+
+    if (sport) query = query.eq('sport', sport);
+    if (position) query = query.eq('position', position);
+    if (minHeight || maxHeight) {
+      query = query.gte('height', minHeight || 0).lte('height', maxHeight || 100);
+    }
+    if (focusAreas && focusAreas.length > 0) {
+      query = query.contains('focus_areas', [focusAreas[0]]); // For overlap; use ilike for partial
+    }
+    if (search) {
+      query = query.or(`name.ilike.%${search}%,position.ilike.%${search}%`);
+    }
+
+    const { data: athletes, error } = await query.order('created_at', { ascending: false }).limit(20);
+
+    if (error) throw error;
+
+    // Seed if empty (dev only)
+    if (athletes.length === 0) {
+      // Insert mocks
+      const mocks = [
+        { name: 'Jordan Lee', sport: 'basketball', position: 'Guard', height: 74, focus_areas: ['shooting'], stats: { vertical: 40 } },
+        // Add 5 more
+      ];
+      const { error: seedError } = await supabase.from('athletes').insert(mocks);
+      if (seedError) console.error(seedError);
+    }
+
+    res.status(200).json({ athletes, count: athletes.length });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
