@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaHome, FaMessage, FaHeart, FaComment, FaShare, FaBasketballBall } from 'react-icons/fa';
+import { FaHome, FaEnvelope, FaHeart, FaComment, FaShare, FaBasketballBall } from 'react-icons/fa';  // Fixed: FaEnvelope instead of FaMessage
 
 export default function CommunityFeed() {
   const [activeTab, setActiveTab] = useState('feed');
@@ -28,7 +28,7 @@ export default function CommunityFeed() {
     <div className="min-h-screen bg-black text-white">
       <div className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-700 flex justify-around py-2 z-10">
         <FaHome onClick={() => setActiveTab('feed')} className={activeTab === 'feed' ? 'text-blue-400' : 'text-gray-400'} />
-        <FaMessage onClick={() => setActiveTab('messages')} className={activeTab === 'messages' ? 'text-blue-400' : 'text-gray-400'} />
+        <FaEnvelope onClick={() => setActiveTab('messages')} className={activeTab === 'messages' ? 'text-blue-400' : 'text-gray-400'} />  {/* Fixed icon */}
       </div>
       <div className="pt-4 pb-20 px-4">
         {activeTab === 'feed' && (
